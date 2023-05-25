@@ -128,14 +128,15 @@
                 <li>DLT: &nbsp<span style="font-weight: 500;">fabric</span></li>
                 <li>Name: &nbsp<span style="font-weight: 500;"></span></li>
                 <li>Description: &nbsp<span style="font-weight: 500;"></span></li>
-                <li>Benchmark Rounds: &nbsp<span style="font-weight: 500;">2</span></li>
+                <li>Benchmark Rounds: &nbsp<span style="font-weight: 500;">3</span></li>
                 <li><a href="#benchmarkInfo">Details</a></li>
             </ul>
             <ul>
                 <h3>&nbspBenchmark results</h3>
                 <li><a href="#benchmarksummary">Summary</a></li>
                     <li><a href="#Create Sensor Data 1">Create Sensor Data 1</a></li>
-                    <li><a href="#Create Sensor Data 2">Create Sensor Data 2</a></li>
+                    <li><a href="#Create Patient Data">Create Patient Data</a></li>
+                    <li><a href="#Get Patient Data">Get Patient Data</a></li>
             </ul>
             <ul>
                 <h3>&nbspSystem under test</h3>
@@ -158,10 +159,13 @@
                     </tr>
 
                     <tr>
-                         <td>Create Sensor Data 1</td> <td>1500</td> <td>0</td> <td>119.5</td> <td>4.43</td> <td>0.23</td> <td>1.69</td> <td>99.9</td>
+                         <td>Create Sensor Data 1</td> <td>100</td> <td>0</td> <td>30.4</td> <td>3.35</td> <td>0.10</td> <td>0.35</td> <td>29.4</td>
                     </tr>
                     <tr>
-                         <td>Create Sensor Data 2</td> <td>1499</td> <td>1</td> <td>119.0</td> <td>3.04</td> <td>0.12</td> <td>1.04</td> <td>104.2</td>
+                         <td>Create Patient Data</td> <td>1993</td> <td>7</td> <td>96.0</td> <td>51.08</td> <td>1.49</td> <td>32.61</td> <td>31.2</td>
+                    </tr>
+                    <tr>
+                         <td>Get Patient Data</td> <td>1995</td> <td>5</td> <td>148.0</td> <td>11.77</td> <td>0.26</td> <td>4.80</td> <td>144.2</td>
                     </tr>
                 </table>
             </div>
@@ -171,7 +175,7 @@
                 <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
   type: fixed-rate
   opts:
-    tps: 120
+    tps: 30
 </pre>
                         <h3>Performance metrics for Create Sensor Data 1</h3>
                             <table style="min-width: 100%;">
@@ -179,30 +183,50 @@
                                      <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
                                 </tr>
                                 <tr>
-                                     <td>Create Sensor Data 1</td> <td>1500</td> <td>0</td> <td>119.5</td> <td>4.43</td> <td>0.23</td> <td>1.69</td> <td>99.9</td>
+                                     <td>Create Sensor Data 1</td> <td>100</td> <td>0</td> <td>30.4</td> <td>3.35</td> <td>0.10</td> <td>0.35</td> <td>29.4</td>
                                 </tr>
                             </table>
                         <h3>Resource utilization for Create Sensor Data 1</h3>
             </div>
 
-            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="Create Sensor Data 2">
-                <h2>Benchmark round: Create Sensor Data 2</h2>
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="Create Patient Data">
+                <h2>Benchmark round: Create Patient Data</h2>
                 <p></p>
                 <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
   type: fixed-rate
   opts:
-    tps: 120
+    tps: 100
 </pre>
-                        <h3>Performance metrics for Create Sensor Data 2</h3>
+                        <h3>Performance metrics for Create Patient Data</h3>
                             <table style="min-width: 100%;">
                                 <tr>
                                      <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
                                 </tr>
                                 <tr>
-                                     <td>Create Sensor Data 2</td> <td>1499</td> <td>1</td> <td>119.0</td> <td>3.04</td> <td>0.12</td> <td>1.04</td> <td>104.2</td>
+                                     <td>Create Patient Data</td> <td>1993</td> <td>7</td> <td>96.0</td> <td>51.08</td> <td>1.49</td> <td>32.61</td> <td>31.2</td>
                                 </tr>
                             </table>
-                        <h3>Resource utilization for Create Sensor Data 2</h3>
+                        <h3>Resource utilization for Create Patient Data</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="Get Patient Data">
+                <h2>Benchmark round: Get Patient Data</h2>
+                <p></p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
+  type: fixed-rate
+  opts:
+    tps: 150
+</pre>
+                        <h3>Performance metrics for Get Patient Data</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>Get Patient Data</td> <td>1995</td> <td>5</td> <td>148.0</td> <td>11.77</td> <td>0.26</td> <td>4.80</td> <td>144.2</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for Get Patient Data</h3>
             </div>
 
             <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;">
@@ -213,21 +237,29 @@
   number: 1
 rounds:
   - label: Create Sensor Data 1
-    txNumber: 1500
+    txNumber: 100
     rateControl:
       type: fixed-rate
       opts:
-        tps: 120
+        tps: 30
     workload:
       module: benchmarks&#x2F;scenario&#x2F;simple&#x2F;pavan-v2.2&#x2F;createIOTData.js
-  - label: Create Sensor Data 2
-    txNumber: 1500
+  - label: Create Patient Data
+    txNumber: 2000
     rateControl:
       type: fixed-rate
       opts:
-        tps: 120
+        tps: 100
     workload:
-      module: benchmarks&#x2F;scenario&#x2F;simple&#x2F;pavan-v2.2&#x2F;createIOTData.js
+      module: benchmarks&#x2F;scenario&#x2F;simple&#x2F;pavan-v2.2&#x2F;createPatient.js
+  - label: Get Patient Data
+    txNumber: 2000
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 150
+    workload:
+      module: benchmarks&#x2F;scenario&#x2F;simple&#x2F;pavan-v2.2&#x2F;queryPatient.js
 </pre>
                 <h3>SUT</h3>
                 <pre id="sutdetails">not provided</pre>
