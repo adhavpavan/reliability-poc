@@ -128,3 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+artifacts/src/github.com/fabcar/go/vendor
+artifacts/channel/crypto-config
+artifacts/channel/create-certificate-with-ca/fabric-ca
+*.block
+*.tx
+api-2.0/queue
