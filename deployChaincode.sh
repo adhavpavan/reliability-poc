@@ -56,7 +56,7 @@ setGlobalsForPeer0Org3(){
 
 presetup() {
     echo Vendoring Go dependencies ...
-    pushd ./artifacts/src/github.com/fabcar/go
+    pushd ./artifacts/src/github.com/patient
     GO111MODULE=on go mod vendor
     popd
     echo Finished vendoring Go dependencies
@@ -67,8 +67,8 @@ CHANNEL_NAME="mychannel"
 CC_RUNTIME_LANGUAGE="golang"
 VERSION="1"
 SEQUENCE="1"
-CC_SRC_PATH="./artifacts/src/github.com/fabcar/go"
-CC_NAME="fabcar"
+CC_SRC_PATH="./artifacts/src/github.com/patient"
+CC_NAME="patient"
 CC_POLICY="OR('Org1MSP.member','Org2MSP.member','Org3MSP.member')"
 
 packageChaincode() {
@@ -262,8 +262,9 @@ queryCommitted() {
 
 chaincodeInvoke() {
     setGlobalsForPeer0Org1
+# id string, department string, amount int, patient string, appraisedValue int
 
-    # Create Car
+    # Create Patient
     peer chaincode invoke -o localhost:7050 \
         --ordererTLSHostnameOverride orderer.example.com \
         --tls $CORE_PEER_TLS_ENABLED \
@@ -271,7 +272,36 @@ chaincodeInvoke() {
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
         --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA   \
-        -c '{"function": "createCar","Args":["{\"id\":\"3\",\"make\":\"Audi\",\"addedAt\":1600138309939,\"model\":\"R8\", \"color\":\"red\",\"owner\":\"pavan\"}"]}'
+        -c '{"function": "CreateAsset","Args":["123", "department1", 22, "patient1", 555]}'
+
+}
+
+chaincodeInvoke1() {
+    setGlobalsForPeer0Org1
+    # Create Patient
+    peer chaincode invoke -o localhost:7050 \
+        --ordererTLSHostnameOverride orderer.example.com \
+        --tls $CORE_PEER_TLS_ENABLED \
+        --cafile $ORDERER_CA \
+        -C $CHANNEL_NAME -n ${CC_NAME}  \
+        --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA   \
+        -c '{"function": "CreateData","Args":["3","{\"id\":\"3\",\"department\":\"department1\",\"amount\":123,\"appraisedValue\":444, \"patient\":\"patient1\"}"]}'
+
+}
+
+initLedger() {
+    setGlobalsForPeer0Org1
+
+    # Create Patient
+    peer chaincode invoke -o localhost:7050 \
+        --ordererTLSHostnameOverride orderer.example.com \
+        --tls $CORE_PEER_TLS_ENABLED \
+        --cafile $ORDERER_CA \
+        -C $CHANNEL_NAME -n ${CC_NAME}  \
+        --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA   \
+        -c '{"function": "InitLedger","Args":[]}'
 
 }
 
@@ -279,7 +309,7 @@ chaincodeInvoke() {
 
 chaincodeQuery() {
     setGlobalsForPeer0Org2
-    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"function": "GetCarById","Args":["2"]}'
+    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"function": "ReadAsset","Args":["3"]}'
 }
 
 # chaincodeQuery
@@ -287,19 +317,21 @@ chaincodeQuery() {
 # Run this function if you add any new dependency in chaincode
 # presetup
 
-packageChaincode
-installChaincode
-queryInstalled
-approveForMyOrg1
-checkCommitReadyness
-approveForMyOrg2
-checkCommitReadyness
-approveForMyOrg3
-# approveForMyOrg4
-# approveForMyOrg5
-commitChaincodeDefination
-queryCommitted
-sleep 5
+# packageChaincode
+# installChaincode
+# queryInstalled
+# approveForMyOrg1
+# checkCommitReadyness
+# approveForMyOrg2
+# checkCommitReadyness
+# approveForMyOrg3
+# # approveForMyOrg4
+# # approveForMyOrg5
+# commitChaincodeDefination
+# queryCommitted
+# sleep 5
 chaincodeInvoke
-sleep 3
-chaincodeQuery
+# chaincodeInvoke1
+# initLedger
+# sleep 3
+# chaincodeQuery

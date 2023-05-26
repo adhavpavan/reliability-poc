@@ -43,7 +43,7 @@ class QueryCarWorkload extends WorkloadModuleBase {
         let carNumber = 'Client' + this.workerIndex + '_CAR' + this.txIndex.toString();
 
         let args = {
-            contractId: 'fabcar',
+            contractId: 'patient',
             contractVersion: 'v1',
             contractFunction: 'queryCar',
             contractArguments: [carNumber],

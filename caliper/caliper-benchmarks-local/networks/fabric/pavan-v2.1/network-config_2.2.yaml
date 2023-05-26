@@ -77,7 +77,7 @@ channels:
   mychannel:
     # configBinary: networks/fabric/pavan-v2.1/mychannel.tx
     created: true
-    contracts: [{ "id": "fabcar", "version": "1" }]
+    contracts: [{ "id": "patient", "version": "1" }]
     definition:
       capabilities: []
       consortium: "SampleConsortium"

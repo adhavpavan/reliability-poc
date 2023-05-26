@@ -44,7 +44,7 @@ class QueryPatientWorkload extends WorkloadModuleBase {
         let id =IdArray[Math.floor(Math.random() * IdArray.length)]
 
         let args = {
-            contractId: 'fabcar',
+            contractId: 'patient',
             contractVersion: 'v1',
             contractFunction: 'ReadAsset',
             contractArguments: [id],

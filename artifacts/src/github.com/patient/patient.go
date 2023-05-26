@@ -1,20 +1,22 @@
-package chaincode
+package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
+	"github.com/hyperledger/fabric/common/flogging"
 )
 
-// SmartContract provides functions for managing an Asset
 type SmartContract struct {
 	contractapi.Contract
 }
 
-// Asset describes basic details of what makes up a simple asset
-//Insert struct field in alphabetic order => to achieve determinism accross languages
-// golang keeps the order when marshal to json but doesn't order automatically
+var logger = flogging.MustGetLogger("fabcar_cc")
+
 type Asset struct {
 	AppraisedValue int    `json:"AppraisedValue"`
 	Department     string `json:"Department"`
@@ -205,4 +207,116 @@ func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface
 	}
 
 	return assets, nil
+}
+
+func (s *SmartContract) CreateData(ctx contractapi.TransactionContextInterface, id string, patientData string) (string, error) {
+
+	if len(patientData) == 0 {
+		return "", fmt.Errorf("please pass the correct car data")
+	}
+
+	return ctx.GetStub().GetTxID(), ctx.GetStub().PutState(id, []byte(patientData))
+}
+
+func (s *SmartContract) GetHistoryForAsset(ctx contractapi.TransactionContextInterface, carID string) (string, error) {
+
+	resultsIterator, err := ctx.GetStub().GetHistoryForKey(carID)
+	if err != nil {
+		return "", fmt.Errorf(err.Error())
+	}
+	defer resultsIterator.Close()
+
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+
+	bArrayMemberAlreadyWritten := false
+	for resultsIterator.HasNext() {
+		response, err := resultsIterator.Next()
+		if err != nil {
+			return "", fmt.Errorf(err.Error())
+		}
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{\"TxId\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(response.TxId)
+		buffer.WriteString("\"")
+
+		buffer.WriteString(", \"Value\":")
+		if response.IsDelete {
+			buffer.WriteString("null")
+		} else {
+			buffer.WriteString(string(response.Value))
+		}
+
+		buffer.WriteString(", \"Timestamp\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
+		buffer.WriteString("\"")
+
+		buffer.WriteString(", \"IsDelete\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(strconv.FormatBool(response.IsDelete))
+		buffer.WriteString("\"")
+
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
+	}
+	buffer.WriteString("]")
+
+	return string(buffer.Bytes()), nil
+}
+
+func (s *SmartContract) GetContractsForQuery(ctx contractapi.TransactionContextInterface, queryString string) ([]Asset, error) {
+
+	queryResults, err := s.getQueryResultForQueryString(ctx, queryString)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to read from ----world state. %s", err.Error())
+	}
+
+	return queryResults, nil
+
+}
+
+func (s *SmartContract) getQueryResultForQueryString(ctx contractapi.TransactionContextInterface, queryString string) ([]Asset, error) {
+
+	resultsIterator, err := ctx.GetStub().GetQueryResult(queryString)
+	if err != nil {
+		return nil, err
+	}
+	defer resultsIterator.Close()
+
+	results := []Asset{}
+
+	for resultsIterator.HasNext() {
+		response, err := resultsIterator.Next()
+		if err != nil {
+			return nil, err
+		}
+
+		newCar := new(Asset)
+
+		err = json.Unmarshal(response.Value, newCar)
+		if err != nil {
+			return nil, err
+		}
+
+		results = append(results, *newCar)
+	}
+	return results, nil
+}
+
+func main() {
+
+	chaincode, err := contractapi.NewChaincode(new(SmartContract))
+	if err != nil {
+		fmt.Printf("Error create fabcar chaincode: %s", err.Error())
+		return
+	}
+	if err := chaincode.Start(); err != nil {
+		fmt.Printf("Error starting chaincodes: %s", err.Error())
+	}
+
 }

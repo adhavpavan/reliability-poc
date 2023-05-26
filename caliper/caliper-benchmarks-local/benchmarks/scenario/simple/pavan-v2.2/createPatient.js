@@ -5,9 +5,9 @@ const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 const { nanoid } = require('nanoid')
 let IdArray = [];
 
-const departments = ['department1', 'department2', 'department3', 'department4', 'department5', 'department6', 'department7', 'department8', 'department9', 'department10'];
+const departments = ["Xray","BloodCheck","Consultation","MRI","Inpatient","Outpatient"];
 const amounts = [23, 45, 65, 76, 34, 564, 456, 567, 578, 5768, 678, 58, 78, 58, 35, 234, 23, 25, 99];
-const patients = ['patient1', 'patient2', 'patient3', 'patient4', 'patient5', 'patient6', 'patient7', 'patient8', 'patient9', 'patient10'];
+const patients = ["Tomoko","Bradd","Jin","Max","Adriana","Michel"];
 const appraisedValues = [345, 3456, 4356, 345, 476, 578, 234, 578, 678, 25, 567, 58, 578, 9, 99, 77];
 
 /**
@@ -36,7 +36,7 @@ class CreatePatientWorkload extends WorkloadModuleBase {
 
     IdArray.push(id)
     let args = {
-      contractId: 'fabcar',
+      contractId: 'patient',
       contractVersion: 'v1',
       contractFunction: 'CreateAsset',
       contractArguments: [id, department, amount, patient, appraisedValue],
