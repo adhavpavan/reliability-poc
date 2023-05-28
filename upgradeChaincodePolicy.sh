@@ -3,8 +3,8 @@ export ORDERER_CA=${PWD}/artifacts/channel/crypto-config/ordererOrganizations/ex
 export PEER0_ORG1_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 export PEER0_ORG2_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 export PEER0_ORG3_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
-export PEER0_ORG4_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/ca.crt
-export PEER0_ORG5_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls/ca.crt
+# export PEER0_ORG4_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/ca.crt
+# export PEER0_ORG5_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls/ca.crt
 export FABRIC_CFG_PATH=${PWD}/artifacts/channel/config/
 
 export CHANNEL_NAME=mychannel
@@ -53,9 +53,10 @@ setGlobalsForPeer0Org3(){
 #     export CORE_PEER_ADDRESS=localhost:13051
 # }
 
+
 presetup() {
     echo Vendoring Go dependencies ...
-    pushd ./artifacts/src/github.com/fabcar/go
+    pushd ./artifacts/src/github.com/patient
     GO111MODULE=on go mod vendor
     popd
     echo Finished vendoring Go dependencies
@@ -64,12 +65,45 @@ presetup() {
 
 CHANNEL_NAME="mychannel"
 CC_RUNTIME_LANGUAGE="golang"
-VERSION="1"
-SEQUENCE="2"
-CC_SRC_PATH="./artifacts/src/github.com/fabcar/go"
-CC_NAME="fabcar"
-CC_POLICY="AND('Org1MSP.member','Org2MSP.member','Org3MSP.member','Org4MSP.member','Org5MSP.member')"
-# CC_POLICY="OR('Org1MSP.member')"
+VERSION="3"
+SEQUENCE="3"
+CC_SRC_PATH="./artifacts/src/github.com/patient"
+CC_NAME="patient"
+CC_POLICY="AND('Org1MSP.member','Org2MSP.member','Org3MSP.member')"
+
+packageChaincode() {
+    rm -rf ${CC_NAME}.tar.gz
+    setGlobalsForPeer0Org1
+    peer lifecycle chaincode package ${CC_NAME}.tar.gz \
+        --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} \
+        --label ${CC_NAME}_${VERSION}
+    echo "===================== Chaincode is packaged ===================== "
+}
+# packageChaincode
+
+installChaincode() {
+    setGlobalsForPeer0Org1
+    peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    echo "===================== Chaincode is installed on peer0.org1 ===================== "
+
+    setGlobalsForPeer0Org2
+    peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    echo "===================== Chaincode is installed on peer0.org2 ===================== "
+
+    setGlobalsForPeer0Org3
+    peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    echo "===================== Chaincode is installed on peer0.org3 ===================== "
+
+    #  setGlobalsForPeer0Org4
+    # peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    # echo "===================== Chaincode is installed on peer0.org4 ===================== "
+
+    #  setGlobalsForPeer0Org5
+    # peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    # echo "===================== Chaincode is installed on peer0.org5 ===================== "
+}
+
+# installChaincode
 
 queryInstalled() {
     setGlobalsForPeer0Org1
@@ -80,7 +114,7 @@ queryInstalled() {
     echo "===================== Query installed successful on peer0.org1 on channel ===================== "
 }
 
-queryInstalled
+# queryInstalled
 
 # --collections-config ./artifacts/private-data/collections_config.json \
 #         --signature-policy "OR('Org1MSP.member','Org2MSP.member')" \
@@ -160,19 +194,6 @@ approveForMyOrg3() {
     echo "===================== chaincode approved from org 2 ===================== "
 }
 
-# queryInstalled
-# approveForMyOrg3
-
-checkCommitReadyness() {
-
-    setGlobalsForPeer0Org3
-    peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME \
-        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA \
-        --signature-policy ${CC_POLICY} \
-        --name ${CC_NAME} --version ${VERSION} --sequence ${SEQUENCE} --output json
-    echo "===================== checking commit readyness from org 1 ===================== "
-}
-
 # approveForMyOrg4() {
 #     setGlobalsForPeer0Org4
 #     set -x
@@ -199,6 +220,19 @@ checkCommitReadyness() {
 #     echo "===================== chaincode approved from org 5 ===================== "
 # }
 
+# queryInstalled
+# approveForMyOrg3
+
+checkCommitReadyness() {
+
+    setGlobalsForPeer0Org3
+    peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME \
+        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA \
+        --signature-policy ${CC_POLICY} \
+        --name ${CC_NAME} --version ${VERSION} --sequence ${SEQUENCE} --output json
+    echo "===================== checking commit readyness from org 1 ===================== "
+}
+
 # checkCommitReadyness
 
 commitChaincodeDefination() {
@@ -210,10 +244,10 @@ commitChaincodeDefination() {
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
         --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
         --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA \
-        --peerAddresses localhost:12051 --tlsRootCertFiles $PEER0_ORG4_CA \
-        --peerAddresses localhost:13051 --tlsRootCertFiles $PEER0_ORG5_CA \
         --version ${VERSION} --sequence ${SEQUENCE}
 
+        # --peerAddresses localhost:12051 --tlsRootCertFiles $PEER0_ORG4_CA \
+        # --peerAddresses localhost:13051 --tlsRootCertFiles $PEER0_ORG5_CA \
 }
 
 # commitChaincodeDefination
@@ -228,27 +262,41 @@ queryCommitted() {
 
 chaincodeInvoke() {
     setGlobalsForPeer0Org1
+# id string, department string, amount int, patient string, appraisedValue int
 
-    # Create Car
+    # Create Patient
     peer chaincode invoke -o localhost:7050 \
         --ordererTLSHostnameOverride orderer.example.com \
         --tls $CORE_PEER_TLS_ENABLED \
         --cafile $ORDERER_CA \
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
-        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA \
-        --peerAddresses localhost:12051 --tlsRootCertFiles $PEER0_ORG4_CA \
-        --peerAddresses localhost:13051 --tlsRootCertFiles $PEER0_ORG5_CA \
-        -c '{"function": "createCar","Args":["{\"id\":\"3\",\"make\":\"Audi\",\"addedAt\":1600138309939,\"model\":\"R8\", \"color\":\"red\",\"owner\":\"pavan\"}"]}'
+        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA   \
+        -c '{"function": "CreateAsset","Args":["123", "department1", "test address","Patient 1", 22, "8888888888"]}'
 
 }
+
+
+chaincodeInvoke1() {
+    setGlobalsForPeer0Org1
+    # Create Patient
+    peer chaincode invoke -o localhost:7050 \
+        --ordererTLSHostnameOverride orderer.example.com \
+        --tls $CORE_PEER_TLS_ENABLED \
+        --cafile $ORDERER_CA \
+        -C $CHANNEL_NAME -n ${CC_NAME}  \
+        --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA   \
+        -c '{"function": "CreateData","Args":["3","{\"id\":\"3\",\"department\":\"department1\",\"age\":22,\"address\":\"test address\", \"name\":\"patient1\", \"phoneNumber\":\"8888888888\", \"billAmount\":222}"]}'
+
+}
+
 
 # chaincodeInvoke
 
 chaincodeQuery() {
     setGlobalsForPeer0Org2
-    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"function": "GetCarById","Args":["3"]}'
+    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"function": "ReadAsset","Args":["3"]}'
 }
 
 # chaincodeQuery
@@ -256,7 +304,8 @@ chaincodeQuery() {
 # Run this function if you add any new dependency in chaincode
 # presetup
 
-
+packageChaincode
+installChaincode
 queryInstalled
 approveForMyOrg1
 checkCommitReadyness
@@ -268,6 +317,6 @@ approveForMyOrg3
 commitChaincodeDefination
 queryCommitted
 sleep 5
-chaincodeInvoke
+chaincodeInvoke1
 sleep 3
 chaincodeQuery

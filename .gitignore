@@ -136,3 +136,5 @@ artifacts/channel/create-certificate-with-ca/fabric-ca
 api-2.0/queue
 artifacts/src/github.com/patient/vendor
 fabcar.tar.gz
+artifacts/src/github.com/patient/vondor
+caliper/vondor

@@ -6,10 +6,13 @@ const { nanoid } = require('nanoid')
 let IdArray = [];
 
 const departments = ["Xray","BloodCheck","Consultation","MRI","Inpatient","Outpatient"];
-const amounts = [23, 45, 65, 76, 34, 564, 456, 567, 578, 5768, 678, 58, 78, 58, 35, 234, 23, 25, 99];
-const patients = ["Tomoko","Bradd","Jin","Max","Adriana","Michel"];
-const appraisedValues = [345, 3456, 4356, 345, 476, 578, 234, 578, 678, 25, 567, 58, 578, 9, 99, 77];
+const ages = [23,29,22,34,21,11,24,5,32,34,54,43,22,23,24,25,65,61,62];
+const names = ["Tomoko","Bradd","Jin","Max","Adriana","Michel"];
+const phoneNumbers = ["9999999999","9999449999", "9999999555", "9999999991","2999999999", "6599999999", "4499999999","5599999999", "6699999999", "7699999999"];
+const addresses = ["Dubai", "Delhi", "Banglore", "Mumbai", "Kolkata", "Tokyo"]
+const billAmounts = [234,2345,35,4456,456,36,234,467,567,678,678,678,476,456,456,346345,345,3454]
 
+// id string, department string, address string, name string, age int, phoneNumber string
 /**
  * Workload module for the benchmark round.
  */
@@ -30,16 +33,18 @@ class CreatePatientWorkload extends WorkloadModuleBase {
     // this.txIndex++;
     let id = 'c' + nanoid();
     let department = departments[Math.floor(Math.random() * departments.length)]
-    let amount =  amounts[Math.floor(Math.random() * amounts.length)]
-    let patient = patients[Math.floor(Math.random() * patients.length)]
-    let appraisedValue = appraisedValues[Math.floor(Math.random() * appraisedValues.length)]
+    let address =  addresses[Math.floor(Math.random() * addresses.length)]
+    let name = names[Math.floor(Math.random() * names.length)]
+    let age = ages[Math.floor(Math.random() * ages.length)]
+    let phoneNumber = phoneNumbers[Math.floor(Math.random() * phoneNumbers.length)]
+    let billAmount = billAmounts[Math.floor(Math.random() * billAmounts.length)]
 
     IdArray.push(id)
     let args = {
       contractId: 'patient',
       contractVersion: 'v1',
       contractFunction: 'CreateAsset',
-      contractArguments: [id, department, amount, patient, appraisedValue],
+      contractArguments: [id, department, address, name, age, phoneNumber, billAmount],
       timeout: 30
     };
 

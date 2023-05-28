@@ -272,9 +272,10 @@ chaincodeInvoke() {
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
         --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA   \
-        -c '{"function": "CreateAsset","Args":["123", "department1", 22, "patient1", 555]}'
+        -c '{"function": "CreateAsset","Args":["123", "department1", "test address","Patient 1", 22, "8888888888"]}'
 
 }
+
 
 chaincodeInvoke1() {
     setGlobalsForPeer0Org1
@@ -286,13 +287,12 @@ chaincodeInvoke1() {
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
         --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA   \
-        -c '{"function": "CreateData","Args":["3","{\"id\":\"3\",\"department\":\"department1\",\"amount\":123,\"appraisedValue\":444, \"patient\":\"patient1\"}"]}'
+        -c '{"function": "CreateData","Args":["3","{\"id\":\"3\",\"department\":\"department1\",\"age\":22,\"address\":\"test address\", \"name\":\"patient1\", \"phoneNumber\":\"8888888888\", \"billAmount\":222}"]}'
 
 }
 
-initLedger() {
+testABAC() {
     setGlobalsForPeer0Org1
-
     # Create Patient
     peer chaincode invoke -o localhost:7050 \
         --ordererTLSHostnameOverride orderer.example.com \
@@ -301,9 +301,11 @@ initLedger() {
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
         --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA   \
-        -c '{"function": "InitLedger","Args":[]}'
+        -c '{"function": "ABACTest","Args":["P-123","{\"id\":\"3\",\"department\":\"department1\",\"age\":22,\"address\":\"test address\", \"name\":\"patient1\", \"phoneNumber\":\"8888888888\",  \"billAmount\":222}"]}'
 
 }
+
+testABAC
 
 # chaincodeInvoke
 
@@ -330,8 +332,7 @@ chaincodeQuery() {
 # commitChaincodeDefination
 # queryCommitted
 # sleep 5
-chaincodeInvoke
+# chaincodeInvoke
 # chaincodeInvoke1
-# initLedger
 # sleep 3
 # chaincodeQuery

@@ -11,6 +11,14 @@ test:
           tps: 30
       workload:
         module: benchmarks/scenario/simple/pavan-v2.2/createPatient.js
+    - label: Round 1.1 - Create Patient Data
+      txNumber: 200
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 60
+      workload:
+        module: benchmarks/scenario/simple/pavan-v2.2/createPatient.js
     - label: Round 2 - Create Patient Data
       txNumber: 200
       rateControl:
@@ -35,12 +43,28 @@ test:
           tps: 150
       workload:
           module: benchmarks/scenario/simple/pavan-v2.2/queryPatient.js
+    - label: Round 4 - Get Patient Data 
+      txNumber: 2000
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 200
+      workload:
+          module: benchmarks/scenario/simple/pavan-v2.2/queryPatient.js
     - label: Round 5 - Get Patient Data 
       txNumber: 1500
       rateControl:
         type: fixed-rate
         opts:
           tps: 100
+      workload:
+          module: benchmarks/scenario/simple/pavan-v2.2/queryPatient.js
+    - label: Round 5.1 - Get Patient Data 
+      txNumber: 1500
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 250
       workload:
           module: benchmarks/scenario/simple/pavan-v2.2/queryPatient.js
 
