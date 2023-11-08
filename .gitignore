@@ -137,4 +137,5 @@ api-2.0/queue
 artifacts/src/github.com/patient/vendor
 fabcar.tar.gz
 artifacts/src/github.com/patient/vondor
-caliper/vondor
+artifacts/src/github.com/contract2/vondor
+vondor

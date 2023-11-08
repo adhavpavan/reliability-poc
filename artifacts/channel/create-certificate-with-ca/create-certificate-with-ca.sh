@@ -697,8 +697,8 @@ sudo rm -rf ../crypto-config/*
 createcertificatesForOrg1
 createCertificatesForOrg2
 createCertificatesForOrg3
-# createCertificatesForOrg4
-# createCertificatesForOrg5
+createCertificatesForOrg4
+createCertificatesForOrg5
 
 createCretificatesForOrderer
 

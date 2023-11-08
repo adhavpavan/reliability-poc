@@ -154,27 +154,27 @@ services:
     networks:
       - test
 
-  # couchdb3:
-  #   container_name: couchdb3
-  #   image: couchdb:3.1.1
-  #   environment:
-  #     - COUCHDB_USER=admin
-  #     - COUCHDB_PASSWORD=adminpw
-  #   ports:
-  #     - 8984:5984
-  #   networks:
-  #     - test
+  couchdb3:
+    container_name: couchdb3
+    image: couchdb:3.1.1
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    ports:
+      - 8984:5984
+    networks:
+      - test
 
-  # couchdb4:
-  #   container_name: couchdb4
-  #   image: couchdb:3.1.1
-  #   environment:
-  #     - COUCHDB_USER=admin
-  #     - COUCHDB_PASSWORD=adminpw
-  #   ports:
-  #     - 9984:5984
-  #   networks:
-  #     - test
+  couchdb4:
+    container_name: couchdb4
+    image: couchdb:3.1.1
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    ports:
+      - 9984:5984
+    networks:
+      - test
 
   peer0.org1.example.com:
     container_name: peer0.org1.example.com
@@ -311,93 +311,93 @@ services:
     networks:
       - test
 
-  # peer0.org4.example.com:
-  #   container_name: peer0.org4.example.com
-  #   extends:
-  #     file: base.yaml
-  #     service: peer-base
-  #   environment:
-  #     - FABRIC_LOGGING_SPEC=info
-  #     - ORDERER_GENERAL_LOGLEVEL=info
-  #     - CORE_PEER_LOCALMSPID=Org4MSP
+  peer0.org4.example.com:
+    container_name: peer0.org4.example.com
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=Org4MSP
 
-  #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
 
-  #     - CORE_PEER_ID=peer0.org4.example.com
-  #     - CORE_PEER_ADDRESS=peer0.org4.example.com:12051
-  #     - CORE_PEER_LISTENADDRESS=0.0.0.0:12051
-  #     # - CORE_PEER_CHAINCODEADDRESS=peer0.org3.example.com:7052
-  #     # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-  #     # Peer used to bootstrap gossip within organisation
-  #     # - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org3.example.com:12051
+      - CORE_PEER_ID=peer0.org4.example.com
+      - CORE_PEER_ADDRESS=peer0.org4.example.com:12051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:12051
+      # - CORE_PEER_CHAINCODEADDRESS=peer0.org3.example.com:7052
+      # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      # Peer used to bootstrap gossip within organisation
+      # - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org3.example.com:12051
 
-  #     # Exposed for discovery Service
-  #     - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org4.example.com:12051
+      # Exposed for discovery Service
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org4.example.com:12051
 
-  #     # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
+      # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
 
-  #     - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-  #     - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
-  #     - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
-  #     - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
-  #     - CORE_PEER_TLS_ENABLED=true
-  #     - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
-  #     - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
-  #     - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
-  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
-  #   depends_on:
-  #     - couchdb3
-  #   ports:
-  #     - 12051:12051
-  #   volumes:
-  #     - ./channel/crypto-config/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/msp:/etc/hyperledger/crypto/peer/msp
-  #     - ./channel/crypto-config/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls:/etc/hyperledger/crypto/peer/tls
-  #     - /var/run/:/host/var/run/
-  #   networks:
-  #     - test
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
+    depends_on:
+      - couchdb3
+    ports:
+      - 12051:12051
+    volumes:
+      - ./channel/crypto-config/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./channel/crypto-config/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls:/etc/hyperledger/crypto/peer/tls
+      - /var/run/:/host/var/run/
+    networks:
+      - test
 
 
-  # peer0.org5.example.com:
-    # container_name: peer0.org5.example.com
-    # extends:
-    #   file: base.yaml
-    #   service: peer-base
-    # environment:
-    #   - FABRIC_LOGGING_SPEC=info
-    #   - ORDERER_GENERAL_LOGLEVEL=info
-    #   - CORE_PEER_LOCALMSPID=Org5MSP
+  peer0.org5.example.com:
+    container_name: peer0.org5.example.com
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=Org5MSP
 
-    #   - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
 
-    #   - CORE_PEER_ID=peer0.org5.example.com
-    #   - CORE_PEER_ADDRESS=peer0.org5.example.com:13051
-    #   - CORE_PEER_LISTENADDRESS=0.0.0.0:13051
-    #   # - CORE_PEER_CHAINCODEADDRESS=peer0.org3.example.com:7052
-    #   # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-    #   # Peer used to bootstrap gossip within organisation
-    #   # - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org3.example.com:12051
+      - CORE_PEER_ID=peer0.org5.example.com
+      - CORE_PEER_ADDRESS=peer0.org5.example.com:13051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:13051
+      # - CORE_PEER_CHAINCODEADDRESS=peer0.org3.example.com:7052
+      # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      # Peer used to bootstrap gossip within organisation
+      # - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org3.example.com:12051
 
-    #   # Exposed for discovery Service
-    #   - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org5.example.com:13051
+      # Exposed for discovery Service
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org5.example.com:13051
 
-    #   # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
+      # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
 
-    #   - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-    #   - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb4:5984
-    #   - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
-    #   - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
-    #   - CORE_PEER_TLS_ENABLED=true
-    #   - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
-    #   - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
-    #   - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
-    #   - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
-    # depends_on:
-    #   - couchdb4
-    # ports:
-    #   - 13051:13051
-    # volumes:
-    #   - ./channel/crypto-config/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/msp:/etc/hyperledger/crypto/peer/msp
-    #   - ./channel/crypto-config/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls:/etc/hyperledger/crypto/peer/tls
-    #   - /var/run/:/host/var/run/
-    # networks:
-    #   - test
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb4:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
+    depends_on:
+      - couchdb4
+    ports:
+      - 13051:13051
+    volumes:
+      - ./channel/crypto-config/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./channel/crypto-config/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls:/etc/hyperledger/crypto/peer/tls
+      - /var/run/:/host/var/run/
+    networks:
+      - test

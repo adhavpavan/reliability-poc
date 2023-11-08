@@ -82,47 +82,47 @@ Organizations:
             - Host: peer0.org3.example.com
               Port: 11051
 
-    # - &Org4
-    #     Name: Org4MSP
-    #     ID: Org4MSP
-    #     MSPDir: crypto-config/peerOrganizations/org4.example.com/msp
-    #     Policies:
-    #         Readers:
-    #             Type: Signature
-    #             Rule: "OR('Org4MSP.admin', 'Org4MSP.peer', 'Org4MSP.client')"
-    #         Writers:
-    #             Type: Signature
-    #             Rule: "OR('Org4MSP.admin', 'Org4MSP.client')"
-    #         Admins:
-    #             Type: Signature
-    #             Rule: "OR('Org4MSP.admin')"
-    #         Endorsement:
-    #             Type: Signature
-    #             Rule: "OR('Org4MSP.peer')"
-    #     AnchorPeers:
-    #         - Host: peer0.org4.example.com
-    #           Port: 12051
+    - &Org4
+        Name: Org4MSP
+        ID: Org4MSP
+        MSPDir: crypto-config/peerOrganizations/org4.example.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org4MSP.admin', 'Org4MSP.peer', 'Org4MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org4MSP.admin', 'Org4MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org4MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org4MSP.peer')"
+        AnchorPeers:
+            - Host: peer0.org4.example.com
+              Port: 12051
 
-    # - &Org5
-    #     Name: Org5MSP
-    #     ID: Org5MSP
-    #     MSPDir: crypto-config/peerOrganizations/org5.example.com/msp
-    #     Policies:
-    #         Readers:
-    #             Type: Signature
-    #             Rule: "OR('Org5MSP.admin', 'Org5MSP.peer', 'Org5MSP.client')"
-    #         Writers:
-    #             Type: Signature
-    #             Rule: "OR('Org5MSP.admin', 'Org5MSP.client')"
-    #         Admins:
-    #             Type: Signature
-    #             Rule: "OR('Org5MSP.admin')"
-    #         Endorsement:
-    #             Type: Signature
-    #             Rule: "OR('Org5MSP.peer')"
-    #     AnchorPeers:
-    #         - Host: peer0.org5.example.com
-    #           Port: 13051
+    - &Org5
+        Name: Org5MSP
+        ID: Org5MSP
+        MSPDir: crypto-config/peerOrganizations/org5.example.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org5MSP.admin', 'Org5MSP.peer', 'Org5MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org5MSP.admin', 'Org5MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org5MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org5MSP.peer')"
+        AnchorPeers:
+            - Host: peer0.org5.example.com
+              Port: 13051
 
 Capabilities:
     Channel: &ChannelCapabilities
@@ -302,8 +302,19 @@ Profiles:
                 - *Org1
                 - *Org2
                 - *Org3
-                # - *Org4
-                # - *Org5
+                - *Org4
+                - *Org5
+            Capabilities:
+                <<: *ApplicationCapabilities
+    BasicChannel2:
+        Consortium: SampleConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+                - *Org3
             Capabilities:
                 <<: *ApplicationCapabilities
     OrdererGenesis:
@@ -342,5 +353,5 @@ Profiles:
                 - *Org1
                 - *Org2
                 - *Org3
-                # - *Org4
-                # - *Org5
+                - *Org4
+                - *Org5
