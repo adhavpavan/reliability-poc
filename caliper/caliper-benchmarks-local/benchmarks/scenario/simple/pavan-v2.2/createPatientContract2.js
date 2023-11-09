@@ -3,7 +3,7 @@
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
 const { nanoid } = require('nanoid')
-let IdArray = [];
+let IdArray2 = [];
 
 const departments = ["Xray","BloodCheck","Consultation","MRI","Inpatient","Outpatient"];
 const ages = [23,29,22,34,21,11,24,5,32,34,54,43,22,23,24,25,65,61,62];
@@ -39,9 +39,9 @@ class CreatePatientWorkload extends WorkloadModuleBase {
     let phoneNumber = phoneNumbers[Math.floor(Math.random() * phoneNumbers.length)]
     let billAmount = billAmounts[Math.floor(Math.random() * billAmounts.length)]
 
-    IdArray.push(id)
+    IdArray2.push(id)
     let args = {
-      contractId: 'contract1',
+      contractId: 'contract2',
       contractVersion: 'v1',
       contractFunction: 'CreateAsset',
       contractArguments: [id, department, address, name, age, phoneNumber, billAmount],
@@ -62,5 +62,5 @@ function createWorkloadModule() {
 
 module.exports ={
   createWorkloadModule,
-  IdArray
+  IdArray2
 }

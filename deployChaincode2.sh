@@ -68,7 +68,7 @@ CC_RUNTIME_LANGUAGE="golang"
 VERSION="1"
 SEQUENCE="1"
 CC_SRC_PATH="./artifacts/src/github.com/contract2"
-CC_NAME="patient"
+CC_NAME="contract1"
 CC_POLICY="OR('Org1MSP.member','Org2MSP.member','Org3MSP.member')"
 
 packageChaincode() {
