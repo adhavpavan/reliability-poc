@@ -79,14 +79,14 @@ createcertificatesForOrg1() {
   echo "## Generate the user msp"
   echo
   fabric-ca-client enroll -u https://user1:user1pw@localhost:7054 --caname ca.org1.example.com -M ${PWD}/../crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org1/tls-cert.pem
-
+cp ${PWD}/../crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/priv_sk
   mkdir -p ../crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com
 
   echo
   echo "## Generate the org admin msp"
   echo
   fabric-ca-client enroll -u https://org1admin:org1adminpw@localhost:7054 --caname ca.org1.example.com -M ${PWD}/../crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org1/tls-cert.pem
-
+cp ${PWD}/../crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/priv_sk
   cp ${PWD}/../crypto-config/peerOrganizations/org1.example.com/msp/config.yaml ${PWD}/../crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/config.yaml
 
 }
@@ -185,7 +185,7 @@ createCertificatesForOrg2() {
   echo
    
   fabric-ca-client enroll -u https://user1:user1pw@localhost:8054 --caname ca.org2.example.com -M ${PWD}/../crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org2/tls-cert.pem
-   
+  cp ${PWD}/../crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/priv_sk
 
   mkdir -p ../crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com
 
@@ -194,7 +194,7 @@ createCertificatesForOrg2() {
   echo
    
   fabric-ca-client enroll -u https://org2admin:org2adminpw@localhost:8054 --caname ca.org2.example.com -M ${PWD}/../crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org2/tls-cert.pem
-   
+  cp ${PWD}/../crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/priv_sk
 
   cp ${PWD}/../crypto-config/peerOrganizations/org2.example.com/msp/config.yaml ${PWD}/../crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/config.yaml
 
@@ -294,7 +294,7 @@ createCertificatesForOrg3() {
   echo
    
   fabric-ca-client enroll -u https://user1:user1pw@localhost:10054 --caname ca.org3.example.com -M ${PWD}/../crypto-config/peerOrganizations/org3.example.com/users/User1@org3.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org3/tls-cert.pem
-   
+   cp ${PWD}/../crypto-config/peerOrganizations/org3.example.com/users/User1@org3.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org3.example.com/users/User1@org3.example.com/msp/keystore/priv_sk
 
   mkdir -p ../crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com
 
@@ -303,7 +303,7 @@ createCertificatesForOrg3() {
   echo
    
   fabric-ca-client enroll -u https://org3admin:org3adminpw@localhost:10054 --caname ca.org3.example.com -M ${PWD}/../crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org3/tls-cert.pem
-   
+  cp ${PWD}/../crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/keystore/priv_sk
 
   cp ${PWD}/../crypto-config/peerOrganizations/org3.example.com/msp/config.yaml ${PWD}/../crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/config.yaml
 
@@ -401,8 +401,7 @@ createCertificatesForOrg4() {
   echo
    
   fabric-ca-client enroll -u https://user1:user1pw@localhost:11054 --caname ca.org4.example.com -M ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/User1@org4.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org4/tls-cert.pem
-   
-
+cp ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/User1@org4.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/User1@org4.example.com/msp/keystore/priv_sk
   mkdir -p ../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com
 
   echo
@@ -410,7 +409,8 @@ createCertificatesForOrg4() {
   echo
    
   fabric-ca-client enroll -u https://org4admin:org4adminpw@localhost:11054 --caname ca.org4.example.com -M ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org4/tls-cert.pem
-   
+  cp ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/priv_sk
+  
 
   cp ${PWD}/../crypto-config/peerOrganizations/org4.example.com/msp/config.yaml ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/config.yaml
 
@@ -508,7 +508,7 @@ createCertificatesForOrg5() {
   echo
    
   fabric-ca-client enroll -u https://user1:user1pw@localhost:12054 --caname ca.org5.example.com -M ${PWD}/../crypto-config/peerOrganizations/org5.example.com/users/User1@org5.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org5/tls-cert.pem
-   
+  cp ${PWD}/../crypto-config/peerOrganizations/org5.example.com/users/User1@org5.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org5.example.com/users/User1@org5.example.com/msp/keystore/priv_sk
 
   mkdir -p ../crypto-config/peerOrganizations/org5.example.com/users/Admin@org5.example.com
 
@@ -517,7 +517,7 @@ createCertificatesForOrg5() {
   echo
    
   fabric-ca-client enroll -u https://org5admin:org5adminpw@localhost:12054 --caname ca.org5.example.com -M ${PWD}/../crypto-config/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org5/tls-cert.pem
-   
+  cp ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/priv_sk
 
   cp ${PWD}/../crypto-config/peerOrganizations/org5.example.com/msp/config.yaml ${PWD}/../crypto-config/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp/config.yaml
 
