@@ -1,10 +1,10 @@
 export CORE_PEER_TLS_ENABLED=true
 export ORDERER_CA=${PWD}/artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 export PEER0_ORG1_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-export PEER0_ORG3_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
+export PEER0_ORG5_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls/ca.crt
 export FABRIC_CFG_PATH=${PWD}/artifacts/channel/config/
 
-export CHANNEL_NAME=mychannel2
+export CHANNEL_NAME=mychannel4
 
 setGlobalsForOrderer() {
     export CORE_PEER_LOCALMSPID="OrdererMSP"
@@ -20,31 +20,30 @@ setGlobalsForPeer0Org1() {
     export CORE_PEER_ADDRESS=localhost:7051
 }
 
-setGlobalsForPeer0Org3(){
-    export CORE_PEER_LOCALMSPID="Org3MSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:11051
-    
+setGlobalsForPeer0Org5(){
+    export CORE_PEER_LOCALMSPID="Org5MSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG5_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp
+    export CORE_PEER_ADDRESS=localhost:13051
 }
 
 
 presetup() {
     echo Vendoring Go dependencies ...
-    pushd ./artifacts/src/github.com/contract2
+    pushd ./artifacts/src/github.com/patient
     GO111MODULE=on go mod vendor
     popd
     echo Finished vendoring Go dependencies
 }
 # presetup
 
-CHANNEL_NAME="mychannel2"
+CHANNEL_NAME="mychannel4"
 CC_RUNTIME_LANGUAGE="golang"
 VERSION="1"
 SEQUENCE="1"
-CC_SRC_PATH="./artifacts/src/github.com/contract2"
-CC_NAME="contract2"
-CC_POLICY="OR('Org1MSP.member','Org3MSP.member')"
+CC_SRC_PATH="./artifacts/src/github.com/patient"
+CC_NAME="contract4"
+CC_POLICY="OR('Org1MSP.member','Org5MSP.member')"
 
 packageChaincode() {
     rm -rf ${CC_NAME}.tar.gz
@@ -61,10 +60,9 @@ installChaincode() {
     peer lifecycle chaincode install ${CC_NAME}.tar.gz
     echo "===================== Chaincode is installed on peer0.org1 ===================== "
 
-    setGlobalsForPeer0Org3
+     setGlobalsForPeer0Org5
     peer lifecycle chaincode install ${CC_NAME}.tar.gz
-    echo "===================== Chaincode is installed on peer0.org3 ===================== "
-
+    echo "===================== Chaincode is installed on peer0.org5 ===================== "
 }
 
 # installChaincode
@@ -97,54 +95,26 @@ approveForMyOrg1() {
     echo "===================== chaincode approved from org 1 ===================== "
 
 }
-
-checkCommitReadyness() {
-    setGlobalsForPeer0Org1
-    peer lifecycle chaincode checkcommitreadiness \
-        --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${VERSION} \
-        --signature-policy ${CC_POLICY} \
-        --sequence ${SEQUENCE} --output json
-    echo "===================== checking commit readyness from org 1 ===================== "
-}
-
-# checkCommitReadyness
+# queryInstalled
+# approveForMyOrg1
 
 
-checkCommitReadyness() {
-
-    setGlobalsForPeer0Org2
-    peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME \
-        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
-        --signature-policy ${CC_POLICY} \
-        --name ${CC_NAME} --version ${VERSION} --sequence ${SEQUENCE} --output json
-    echo "===================== checking commit readyness from org 1 ===================== "
-}
-
-# checkCommitReadyness
-
-approveForMyOrg3() {
-    setGlobalsForPeer0Org3
-
+approveForMyOrg5() {
+    setGlobalsForPeer0Org5
+    set -x
     peer lifecycle chaincode approveformyorg -o localhost:7050 \
-        --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED \
+        --ordererTLSHostnameOverride orderer.example.com --tls \
         --signature-policy ${CC_POLICY} \
-        --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} \
-        --version ${VERSION} --package-id ${PACKAGE_ID} \
+        --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${VERSION} \
+        --package-id ${PACKAGE_ID} \
         --sequence ${SEQUENCE}
-
-    echo "===================== chaincode approved from org 2 ===================== "
+    set +x
+    echo "===================== chaincode approved from org 5 ===================== "
 }
 
+# queryInstalled
+# approveForMyOrg3
 
-checkCommitReadyness() {
-
-    setGlobalsForPeer0Org3
-    peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME \
-        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA \
-        --signature-policy ${CC_POLICY} \
-        --name ${CC_NAME} --version ${VERSION} --sequence ${SEQUENCE} --output json
-    echo "===================== checking commit readyness from org 1 ===================== "
-}
 
 # checkCommitReadyness
 
@@ -155,9 +125,10 @@ commitChaincodeDefination() {
         --signature-policy ${CC_POLICY} \
         --channelID $CHANNEL_NAME --name ${CC_NAME} \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA \
+        --peerAddresses localhost:13051 --tlsRootCertFiles $PEER0_ORG5_CA \
         --version ${VERSION} --sequence ${SEQUENCE}
 
+        
 }
 
 # commitChaincodeDefination
@@ -181,7 +152,7 @@ chaincodeInvoke() {
         --cafile $ORDERER_CA \
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA   \
+        --peerAddresses localhost:13051 --tlsRootCertFiles $PEER0_ORG5_CA \
         -c '{"function": "CreateAsset","Args":["123", "department1", "test address","Patient 1", 22, "8888888888"]}'
 
 }
@@ -196,7 +167,7 @@ chaincodeInvoke1() {
         --cafile $ORDERER_CA \
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA   \
+        --peerAddresses localhost:13051 --tlsRootCertFiles $PEER0_ORG5_CA \
         -c '{"function": "CreateData","Args":["3","{\"id\":\"3\",\"department\":\"department1\",\"age\":22,\"address\":\"test address\", \"name\":\"patient1\", \"phoneNumber\":\"8888888888\", \"billAmount\":222}"]}'
 
 }
@@ -210,7 +181,7 @@ testABAC() {
         --cafile $ORDERER_CA \
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA   \
+        --peerAddresses localhost:13051 --tlsRootCertFiles $PEER0_ORG5_CA \
         -c '{"function": "ABACTest","Args":["P-123","{\"id\":\"3\",\"department\":\"department1\",\"age\":22,\"address\":\"test address\", \"name\":\"patient1\", \"phoneNumber\":\"8888888888\",  \"billAmount\":222}"]}'
 
 }
@@ -233,8 +204,7 @@ packageChaincode
 installChaincode
 queryInstalled
 approveForMyOrg1
-checkCommitReadyness
-approveForMyOrg3
+approveForMyOrg5
 commitChaincodeDefination
 queryCommitted
 sleep 5

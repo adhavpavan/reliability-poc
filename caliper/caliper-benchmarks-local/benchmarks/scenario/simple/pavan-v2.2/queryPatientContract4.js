@@ -1,7 +1,7 @@
 'use strict';
 
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
-const { IdArray2 } = require('./createPatientContract2');
+const { IdArray4 } = require('./createPatientContract4');
 
 // const helper = require('./helper');
 
@@ -41,14 +41,14 @@ class QueryPatientWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         this.txIndex++;
-        let id =IdArray2[Math.floor(Math.random() * IdArray2.length)]
+        let id =IdArray4[Math.floor(Math.random() * IdArray4.length)]
 
         let args = {
-            contractId: 'contract2',
+            contractId: 'contract4',
             contractVersion: 'v1',
             contractFunction: 'ReadAsset',
             contractArguments: [id],
-            channel: 'mychannel2',
+            channel: 'mychannel4',
             timeout: 30,
             readOnly: true
         };

@@ -75,13 +75,12 @@ clients:
 
 channels:
   mychannel:
-    # configBinary: networks/fabric/pavan-v2.1/mychannel.tx
     created: true
-    contracts: [{ "id": "contract1", "version": "1" }, { "id": "contract2", "version": "1" }]
+    contracts: [{ "id": "contract1", "version": "1" }]
     definition:
       capabilities: []
       consortium: "SampleConsortium"
-      msps: ["Org1MSP", "Org2MSP", "Org3MSP", "Org4MSP", "Org5MSP"]
+      msps: ["Org1MSP", "Org2MSP"]
       version: 0
     orderers:
       - orderer.example.com
@@ -92,9 +91,54 @@ channels:
         eventSource: true
       peer0.org2.example.com:
         eventSource: true
+  mychannel2:
+    created: true
+    contracts: [{ "id": "contract2", "version": "1" }]
+    definition:
+      capabilities: []
+      consortium: "SampleConsortium"
+      msps: ["Org1MSP", "Org3MSP"]
+      version: 0
+    orderers:
+      - orderer.example.com
+      - orderer2.example.com
+      - orderer3.example.com
+    peers:
+      peer0.org1.example.com:
+        eventSource: true
       peer0.org3.example.com:
         eventSource: true
+  mychannel3:
+    created: true
+    contracts: [{ "id": "contract3", "version": "1" }]
+    definition:
+      capabilities: []
+      consortium: "SampleConsortium"
+      msps: ["Org1MSP", "Org4MSP"]
+      version: 0
+    orderers:
+      - orderer.example.com
+      - orderer2.example.com
+      - orderer3.example.com
+    peers:
+      peer0.org1.example.com:
+        eventSource: true
       peer0.org4.example.com:
+        eventSource: true
+  mychannel4:
+    created: true
+    contracts: [{ "id": "contract4", "version": "1" }]
+    definition:
+      capabilities: []
+      consortium: "SampleConsortium"
+      msps: ["Org1MSP", "Org5MSP"]
+      version: 0
+    orderers:
+      - orderer.example.com
+      - orderer2.example.com
+      - orderer3.example.com
+    peers:
+      peer0.org1.example.com:
         eventSource: true
       peer0.org5.example.com:
         eventSource: true

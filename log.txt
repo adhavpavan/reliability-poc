@@ -1,4 +1,5 @@
 Installed chaincodes on peer:
-Package ID: contract2_1:db72e7aa24d605537f0baa0c674e97976d80cbf5fc66d4a1f8c3136203f1c478, Label: contract2_1
-Package ID: patient_1:6624cbb3ceae192ab5bd1eab7f5d06e40fd2ec8a53a61cb17e756921c0cfdf13, Label: patient_1
+Package ID: contract4_1:71ec41f83646643a1f64eadacf1123e1013f51e5b0973adfeac7f64bfe9bcdf0, Label: contract4_1
 Package ID: contract1_1:2866a62f9e4ca8b9765e2dfcb1e5c2f576cc4821eb9223006b2332e95d3131db, Label: contract1_1
+Package ID: contract2_1:db72e7aa24d605537f0baa0c674e97976d80cbf5fc66d4a1f8c3136203f1c478, Label: contract2_1
+Package ID: contract3_1:e753a020c215749b72b8a8e332765df9150654b2bfd8515511978f0ace3e0cb7, Label: contract3_1

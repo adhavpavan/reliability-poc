@@ -301,9 +301,6 @@ Profiles:
             Organizations:
                 - *Org1
                 - *Org2
-                - *Org3
-                - *Org4
-                - *Org5
             Capabilities:
                 <<: *ApplicationCapabilities
     BasicChannel2:
@@ -313,8 +310,27 @@ Profiles:
             <<: *ApplicationDefaults
             Organizations:
                 - *Org1
-                - *Org2
                 - *Org3
+            Capabilities:
+                <<: *ApplicationCapabilities
+    BasicChannel3:
+        Consortium: SampleConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org4
+            Capabilities:
+                <<: *ApplicationCapabilities
+    BasicChannel4:
+        Consortium: SampleConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org5
             Capabilities:
                 <<: *ApplicationCapabilities
     OrdererGenesis:
