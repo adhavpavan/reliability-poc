@@ -30,7 +30,7 @@ setGlobalsForPeer0Org5(){
 
 presetup() {
     echo Vendoring Go dependencies ...
-    pushd ./artifacts/src/github.com/patient
+    pushd ./artifacts/src/github.com/contract2
     GO111MODULE=on go mod vendor
     popd
     echo Finished vendoring Go dependencies
@@ -41,7 +41,7 @@ CHANNEL_NAME="mychannel4"
 CC_RUNTIME_LANGUAGE="golang"
 VERSION="1"
 SEQUENCE="1"
-CC_SRC_PATH="./artifacts/src/github.com/patient"
+CC_SRC_PATH="./artifacts/src/github.com/contract2"
 CC_NAME="contract4"
 CC_POLICY="OR('Org1MSP.member','Org5MSP.member')"
 

@@ -69,7 +69,7 @@ VERSION="3"
 SEQUENCE="3"
 CC_SRC_PATH="./artifacts/src/github.com/patient"
 CC_NAME="patient"
-CC_POLICY="AND('Org1MSP.member','Org2MSP.member','Org3MSP.member')"
+CC_POLICY="AND('Org1MSP.member','Org2MSP.member')"
 
 packageChaincode() {
     rm -rf ${CC_NAME}.tar.gz
