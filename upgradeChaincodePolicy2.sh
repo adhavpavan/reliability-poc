@@ -29,15 +29,6 @@ setGlobalsForPeer0Org3(){
 }
 
 
-presetup() {
-    echo Vendoring Go dependencies ...
-    pushd ./artifacts/src/github.com/contract2
-    GO111MODULE=on go mod vendor
-    popd
-    echo Finished vendoring Go dependencies
-}
-# presetup
-
 CHANNEL_NAME="mychannel2"
 CC_RUNTIME_LANGUAGE="golang"
 VERSION="1"

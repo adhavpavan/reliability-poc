@@ -27,15 +27,6 @@ setGlobalsForPeer0Org4(){
     export CORE_PEER_ADDRESS=localhost:12051
 }
 
-presetup() {
-    echo Vendoring Go dependencies ...
-    pushd ./artifacts/src/github.com/contract2
-    GO111MODULE=on go mod vendor
-    popd
-    echo Finished vendoring Go dependencies
-}
-# presetup
-
 CHANNEL_NAME="mychannel3"
 CC_RUNTIME_LANGUAGE="golang"
 VERSION="1"

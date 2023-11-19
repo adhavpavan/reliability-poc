@@ -23,7 +23,21 @@ channel3 - [1,5] - contract4
 Create CA
 Create Certificates
 Create Artifacts
+---------------------
 Create All Services
 Create Channels 1,2,3,4,
 Deploy Chainocde 1,2,3,4
 Invoke Tx
+
+------------------------------------------------------------------------
+
+Criteria
+1) Machine Configuration: 16GB , 50GB SSD, 4 cors
+    1) Check Performance for 4 channel
+        1) Policy (AND - OR)
+        2) Block Time and Size
+
+2) Machine Configuration 8GB, 50GB, 2 core
+     1) Check Performance for 4 channel
+        1) Policy (AND - OR)
+        2) Block Time and Size
