@@ -22,7 +22,7 @@ setGlobalsForPeer0Org5(){
 
 
 createChannel(){
-    rm -rf ./channel-artifacts/*
+    # rm -rf ./channel-artifacts/*
     setGlobalsForPeer0Org1
     
     peer channel create -o localhost:7050 -c $CHANNEL_NAME \
