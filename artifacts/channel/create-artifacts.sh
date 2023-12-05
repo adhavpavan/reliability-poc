@@ -12,6 +12,7 @@ CHANNEL_NAME="mychannel"
 CHANNEL_NAME2="mychannel2"
 CHANNEL_NAME3="mychannel3"
 CHANNEL_NAME4="mychannel4"
+CHANNEL_NAME5="mychannel5"
 
 echo $CHANNEL_NAME
 
@@ -62,5 +63,22 @@ configtxgen -profile BasicChannel4 -configPath . -outputAnchorPeersUpdate ./Org1
 
 echo "#######    Generating anchor peer update for Org5MSP  ##########"
 configtxgen -profile BasicChannel4 -configPath . -outputAnchorPeersUpdate ./Org5MSPanchors4.tx -channelID $CHANNEL_NAME4 -asOrg Org5MSP
+
+# -----------------------------------------
+
+# ---------------------------------------
+# Channel5
+# Generate channel configuration block
+configtxgen -profile BasicChannel5 -configPath . -outputCreateChannelTx ./mychannel5.tx -channelID $CHANNEL_NAME5
+
+echo "#######    Generating anchor peer update for Org2MSP  ##########"
+configtxgen -profile BasicChannel5 -configPath . -outputAnchorPeersUpdate ./Org2MSPanchors5.tx -channelID $CHANNEL_NAME5 -asOrg Org2MSP
+
+echo "#######    Generating anchor peer update for Org6MSP  ##########"
+configtxgen -profile BasicChannel5 -configPath . -outputAnchorPeersUpdate ./Org6MSPanchors5.tx -channelID $CHANNEL_NAME5 -asOrg Org6MSP
+
+echo "#######    Generating anchor peer update for Org7MSP  ##########"
+configtxgen -profile BasicChannel5 -configPath . -outputAnchorPeersUpdate ./Org7MSPanchors5.tx -channelID $CHANNEL_NAME5 -asOrg Org7MSP
+
 
 # -----------------------------------------

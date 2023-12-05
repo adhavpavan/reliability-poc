@@ -7,7 +7,7 @@ caliper:
 
 info:
   Version: 2.1.0
-  Size: 5 Orgs with 1 Peer
+  Size: 7 Orgs with 1 Peer
   Orderer: Raft
   Distribution: Single Host
   StateDB: CouchDB
@@ -72,6 +72,30 @@ clients:
         path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org5.example.com/users/User1@org5.example.com/msp/keystore/priv_sk
       clientSignedCert:
         path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org5.example.com/users/User1@org5.example.com/msp/signcerts/cert.pem
+
+  client0.org6.example.com:
+    client:
+      organization: Org6
+      credentialStore:
+        path: /tmp/hfc-kvs/org6
+        cryptoStore:
+          path: /tmp/hfc-cvs/org6
+      clientPrivateKey:
+        path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org6.example.com/users/User1@org6.example.com/msp/keystore/priv_sk
+      clientSignedCert:
+        path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org6.example.com/users/User1@org6.example.com/msp/signcerts/cert.pem
+
+  client0.org7.example.com:
+    client:
+      organization: Org7
+      credentialStore:
+        path: /tmp/hfc-kvs/org7
+        cryptoStore:
+          path: /tmp/hfc-cvs/org7
+      clientPrivateKey:
+        path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org7.example.com/users/User1@org7.example.com/msp/keystore/priv_sk
+      clientSignedCert:
+        path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org7.example.com/users/User1@org7.example.com/msp/signcerts/cert.pem
 
 channels:
   mychannel:
@@ -142,6 +166,25 @@ channels:
         eventSource: true
       peer0.org5.example.com:
         eventSource: true
+  mychannel5:
+    created: true
+    contracts: [{ "id": "contract5", "version": "1" }]
+    definition:
+      capabilities: []
+      consortium: "SampleConsortium"
+      msps: ["Org2MSP", "Org6MSP", "Org7MSP"]
+      version: 0
+    orderers:
+      - orderer.example.com
+      - orderer2.example.com
+      - orderer3.example.com
+    peers:
+      peer0.org2.example.com:
+        eventSource: true
+      peer0.org6.example.com:
+        eventSource: true
+      peer0.org7.example.com:
+        eventSource: true
 
 organizations:
   Org1:
@@ -198,6 +241,28 @@ organizations:
       path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp/keystore/priv_sk
     signedCert:
       path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp/signcerts/cert.pem
+
+  Org6:
+    mspid: Org6MSP
+    peers:
+      - peer0.org6.example.com
+    certificateAuthorities:
+      - ca.org6.example.com
+    adminPrivateKey:
+      path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org6.example.com/users/Admin@org6.example.com/msp/keystore/priv_sk
+    signedCert:
+      path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org6.example.com/users/Admin@org6.example.com/msp/signcerts/cert.pem
+
+  Org7:
+    mspid: Org7MSP
+    peers:
+      - peer0.org7.example.com
+    certificateAuthorities:
+      - ca.org7.example.com
+    adminPrivateKey:
+      path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org7.example.com/users/Admin@org7.example.com/msp/keystore/priv_sk
+    signedCert:
+      path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org7.example.com/users/Admin@org7.example.com/msp/signcerts/cert.pem
 
 orderers:
   orderer.example.com:
@@ -260,6 +325,22 @@ peers:
     tlsCACerts:
       path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls/tlscacerts/tls-localhost-12054-ca-org5-example-com.pem
 
+  peer0.org6.example.com:
+    url: grpcs://localhost:14051
+    grpcOptions:
+      ssl-target-name-override: peer0.org6.example.com
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/tlscacerts/tls-localhost-13054-ca-org6-example-com.pem
+
+  peer0.org7.example.com:
+    url: grpcs://localhost:15051
+    grpcOptions:
+      ssl-target-name-override: peer0.org7.example.com
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls/tlscacerts/tls-localhost-14054-ca-org7-example-com.pem
+
 certificateAuthorities:
   ca.org1.example.com:
     url: https://localhost:7054
@@ -307,6 +388,26 @@ certificateAuthorities:
       verify: false
     tlsCACerts:
       path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org5.example.com/tlsca/tlsca.org5.example.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+
+  ca.org6.example.com:
+    url: https://localhost:13054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org6.example.com/tlsca/tlsca.org6.example.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+
+  ca.org7.example.com:
+    url: https://localhost:14054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org7.example.com/tlsca/tlsca.org7.example.com-cert.pem
     registrar:
       - enrollId: admin
         enrollSecret: adminpw

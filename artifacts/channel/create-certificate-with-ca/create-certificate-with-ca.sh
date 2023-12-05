@@ -492,6 +492,207 @@ createCertificatesForOrg5() {
 
 }
 
+createCertificatesForOrg6() {
+  echo
+  echo "Enroll the CA admin"
+  echo
+  mkdir -p ../crypto-config/peerOrganizations/org6.example.com/
+
+  export FABRIC_CA_CLIENT_HOME=${PWD}/../crypto-config/peerOrganizations/org6.example.com/
+
+  fabric-ca-client enroll -u https://admin:adminpw@localhost:13054 --caname ca.org6.example.com --tls.certfiles ${PWD}/fabric-ca/org6/tls-cert.pem
+
+  echo 'NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: cacerts/localhost-13054-ca-org6-example-com.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/localhost-13054-ca-org6-example-com.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/localhost-13054-ca-org6-example-com.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/localhost-13054-ca-org6-example-com.pem
+    OrganizationalUnitIdentifier: orderer' >${PWD}/../crypto-config/peerOrganizations/org6.example.com/msp/config.yaml
+
+  echo
+  echo "Register peer0"
+  echo
+
+  fabric-ca-client register --caname ca.org6.example.com --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles ${PWD}/fabric-ca/org6/tls-cert.pem
+
+  echo
+  echo "Register user"
+  echo
+
+  fabric-ca-client register --caname ca.org6.example.com --id.name user1 --id.secret user1pw --id.type client --tls.certfiles ${PWD}/fabric-ca/org6/tls-cert.pem
+
+  echo
+  echo "Register the org admin"
+  echo
+
+  fabric-ca-client register --caname ca.org6.example.com --id.name org6admin --id.secret org6adminpw --id.type admin --tls.certfiles ${PWD}/fabric-ca/org6/tls-cert.pem
+
+  mkdir -p ../crypto-config/peerOrganizations/org6.example.com/peers
+  mkdir -p ../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com
+
+  # --------------------------------------------------------------
+  # Peer 0
+  echo
+  echo "## Generate the peer0 msp"
+  echo
+
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:13054 --caname ca.org6.example.com -M ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/msp --csr.hosts peer0.org6.example.com --tls.certfiles ${PWD}/fabric-ca/org6/tls-cert.pem
+
+  cp ${PWD}/../crypto-config/peerOrganizations/org6.example.com/msp/config.yaml ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/msp/config.yaml
+
+  echo
+  echo "## Generate the peer0-tls certificates"
+  echo
+
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:13054 --caname ca.org6.example.com -M ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls --enrollment.profile tls --csr.hosts peer0.org6.example.com --csr.hosts localhost --tls.certfiles ${PWD}/fabric-ca/org6/tls-cert.pem
+
+  cp ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/tlscacerts/* ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/ca.crt
+  cp ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/signcerts/* ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/server.crt
+  cp ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/keystore/* ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/server.key
+
+  mkdir ${PWD}/../crypto-config/peerOrganizations/org6.example.com/msp/tlscacerts
+  cp ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/tlscacerts/* ${PWD}/../crypto-config/peerOrganizations/org6.example.com/msp/tlscacerts/ca.crt
+
+  mkdir ${PWD}/../crypto-config/peerOrganizations/org6.example.com/tlsca
+  cp ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/tlscacerts/* ${PWD}/../crypto-config/peerOrganizations/org6.example.com/tlsca/tlsca.org6.example.com-cert.pem
+
+  mkdir ${PWD}/../crypto-config/peerOrganizations/org6.example.com/ca
+  cp ${PWD}/../crypto-config/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/msp/cacerts/* ${PWD}/../crypto-config/peerOrganizations/org6.example.com/ca/ca.org6.example.com-cert.pem
+
+  # --------------------------------------------------------------------------------
+
+  mkdir -p ../crypto-config/peerOrganizations/org6.example.com/users
+  mkdir -p ../crypto-config/peerOrganizations/org6.example.com/users/User1@org6.example.com
+
+  echo
+  echo "## Generate the user msp"
+  echo
+
+  fabric-ca-client enroll -u https://user1:user1pw@localhost:13054 --caname ca.org6.example.com -M ${PWD}/../crypto-config/peerOrganizations/org6.example.com/users/User1@org6.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org6/tls-cert.pem
+  cp ${PWD}/../crypto-config/peerOrganizations/org6.example.com/users/User1@org6.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org6.example.com/users/User1@org6.example.com/msp/keystore/priv_sk
+
+  mkdir -p ../crypto-config/peerOrganizations/org6.example.com/users/Admin@org6.example.com
+
+  echo
+  echo "## Generate the org admin msp"
+  echo
+
+  fabric-ca-client enroll -u https://org6admin:org6adminpw@localhost:13054 --caname ca.org6.example.com -M ${PWD}/../crypto-config/peerOrganizations/org6.example.com/users/Admin@org6.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org6/tls-cert.pem
+  cp ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/priv_sk
+
+  cp ${PWD}/../crypto-config/peerOrganizations/org6.example.com/msp/config.yaml ${PWD}/../crypto-config/peerOrganizations/org6.example.com/users/Admin@org6.example.com/msp/config.yaml
+
+}
+
+createCertificatesForOrg7() {
+  echo
+  echo "Enroll the CA admin"
+  echo
+  mkdir -p ../crypto-config/peerOrganizations/org7.example.com/
+
+  export FABRIC_CA_CLIENT_HOME=${PWD}/../crypto-config/peerOrganizations/org7.example.com/
+
+  fabric-ca-client enroll -u https://admin:adminpw@localhost:14054 --caname ca.org7.example.com --tls.certfiles ${PWD}/fabric-ca/org7/tls-cert.pem
+
+  echo 'NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: cacerts/localhost-14054-ca-org7-example-com.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/localhost-14054-ca-org7-example-com.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/localhost-14054-ca-org7-example-com.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/localhost-14054-ca-org7-example-com.pem
+    OrganizationalUnitIdentifier: orderer' >${PWD}/../crypto-config/peerOrganizations/org7.example.com/msp/config.yaml
+
+  echo
+  echo "Register peer0"
+  echo
+
+  fabric-ca-client register --caname ca.org7.example.com --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles ${PWD}/fabric-ca/org7/tls-cert.pem
+
+  echo
+  echo "Register user"
+  echo
+
+  fabric-ca-client register --caname ca.org7.example.com --id.name user1 --id.secret user1pw --id.type client --tls.certfiles ${PWD}/fabric-ca/org7/tls-cert.pem
+
+  echo
+  echo "Register the org admin"
+  echo
+
+  fabric-ca-client register --caname ca.org7.example.com --id.name org7admin --id.secret org7adminpw --id.type admin --tls.certfiles ${PWD}/fabric-ca/org7/tls-cert.pem
+
+  mkdir -p ../crypto-config/peerOrganizations/org7.example.com/peers
+  mkdir -p ../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com
+
+  # --------------------------------------------------------------
+  # Peer 0
+  echo
+  echo "## Generate the peer0 msp"
+  echo
+
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:14054 --caname ca.org7.example.com -M ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/msp --csr.hosts peer0.org7.example.com --tls.certfiles ${PWD}/fabric-ca/org7/tls-cert.pem
+
+  cp ${PWD}/../crypto-config/peerOrganizations/org7.example.com/msp/config.yaml ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/msp/config.yaml
+
+  echo
+  echo "## Generate the peer0-tls certificates"
+  echo
+
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:14054 --caname ca.org7.example.com -M ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls --enrollment.profile tls --csr.hosts peer0.org7.example.com --csr.hosts localhost --tls.certfiles ${PWD}/fabric-ca/org7/tls-cert.pem
+
+  cp ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls/tlscacerts/* ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls/ca.crt
+  cp ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls/signcerts/* ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls/server.crt
+  cp ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls/keystore/* ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls/server.key
+
+  mkdir ${PWD}/../crypto-config/peerOrganizations/org7.example.com/msp/tlscacerts
+  cp ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls/tlscacerts/* ${PWD}/../crypto-config/peerOrganizations/org7.example.com/msp/tlscacerts/ca.crt
+
+  mkdir ${PWD}/../crypto-config/peerOrganizations/org7.example.com/tlsca
+  cp ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/tls/tlscacerts/* ${PWD}/../crypto-config/peerOrganizations/org7.example.com/tlsca/tlsca.org7.example.com-cert.pem
+
+  mkdir ${PWD}/../crypto-config/peerOrganizations/org7.example.com/ca
+  cp ${PWD}/../crypto-config/peerOrganizations/org7.example.com/peers/peer0.org7.example.com/msp/cacerts/* ${PWD}/../crypto-config/peerOrganizations/org7.example.com/ca/ca.org7.example.com-cert.pem
+
+  # --------------------------------------------------------------------------------
+
+  mkdir -p ../crypto-config/peerOrganizations/org7.example.com/users
+  mkdir -p ../crypto-config/peerOrganizations/org7.example.com/users/User1@org7.example.com
+
+  echo
+  echo "## Generate the user msp"
+  echo
+
+  fabric-ca-client enroll -u https://user1:user1pw@localhost:14054 --caname ca.org7.example.com -M ${PWD}/../crypto-config/peerOrganizations/org7.example.com/users/User1@org7.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org7/tls-cert.pem
+  cp ${PWD}/../crypto-config/peerOrganizations/org7.example.com/users/User1@org7.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org7.example.com/users/User1@org7.example.com/msp/keystore/priv_sk
+
+  mkdir -p ../crypto-config/peerOrganizations/org7.example.com/users/Admin@org7.example.com
+
+  echo
+  echo "## Generate the org admin msp"
+  echo
+
+  fabric-ca-client enroll -u https://org7admin:org7adminpw@localhost:14054 --caname ca.org7.example.com -M ${PWD}/../crypto-config/peerOrganizations/org7.example.com/users/Admin@org7.example.com/msp --tls.certfiles ${PWD}/fabric-ca/org7/tls-cert.pem
+  cp ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/* ${PWD}/../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/priv_sk
+
+  cp ${PWD}/../crypto-config/peerOrganizations/org7.example.com/msp/config.yaml ${PWD}/../crypto-config/peerOrganizations/org7.example.com/users/Admin@org7.example.com/msp/config.yaml
+
+}
+
+
 createCretificatesForOrderer() {
   echo
   echo "Enroll the CA admin"
@@ -654,5 +855,8 @@ createCertificatesForOrg2
 createCertificatesForOrg3
 createCertificatesForOrg4
 createCertificatesForOrg5
+
+createCertificatesForOrg6
+createCertificatesForOrg7
 
 createCretificatesForOrderer
